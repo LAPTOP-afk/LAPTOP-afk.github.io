@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FTSON计算器</title>
+</head>
+
+<body>
+    <input type="number" id="num1" placeholder="第一个数字">
+    <select id="operator">
+        <option value="+">+</option>
+        <option value="-">-</option>
+        <option value="*">*</option>
+        <option value="/">/</option>
+    </select>
+    <input type="number" id="num2" placeholder="第二个数字">
+    <button onclick="calculate()">计算</button>
+    <p id="result"></p>
+
+    <script>
+        function calculate() {
+            var num1 = parseFloat(document.getElementById('num1').value);
+            var num2 = parseFloat(document.getElementById('num2').value);
+            var operator = document.getElementById('operator').value;
+            var result;
+
+            switch (operator) {
+                case '+':
+                    result = num1 + num2;
+                    break;
+                case '-':
+                    result = num1 - num2;
+                    break;
+                case '*':
+                    result = num1 * num2;
+                    break;
+                case '/':
+                    if (num2 === 0) {
+                        result = "Error: division by zero";
+                    } else {
+                        result = num1 / num2;
+                    }
+                    break;
+            }
+
+            document.getElementById('result').innerHTML = "结果: " + result;
+        }
+    </script>
+</body>
+
+</html>

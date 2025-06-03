@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统维护通知 | 服务器暂时关闭</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36BFFA',
+                        dark: '#1D2939',
+                        light: '#F9FAFB'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- 自定义工具类 -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .animate-float {
+                animation: float 3s ease-in-out infinite;
+            }
+            .animate-pulse-slow {
+                animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+    
+    <!-- 自定义样式 -->
+    <style>
+        body {
+            background-image: radial-gradient(circle at 50% 50%, rgba(22, 93, 255, 0.05) 0%, rgba(22, 93, 255, 0) 70%);
+            background-color: #F9FAFB;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: linear-gradient(90deg, #165DFF 0%, #36BFFA 100%);
+            animation: progress 60s linear infinite;
+        }
+        
+        @keyframes progress {
+            0% {
+                width: 0%;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+        
+        .countdown-item {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .countdown-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            100% {
+                left: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="font-inter text-dark min-h-screen flex flex-col">
+    <!-- 顶部进度条 -->
+    <div class="progress-bar w-full"></div>
+    
+    <!-- 主内容区 -->
+    <main class="flex-grow flex flex-col items-center justify-center px-4 py-12 md:py-20">
+        <div class="max-w-4xl w-full bg-white rounded-2xl shadow-xl overflow-hidden transition-all duration-500 transform hover:shadow-2xl">
+            <!-- 头部 -->
+            <div class="bg-gradient-to-r from-primary to-secondary p-8 text-white relative overflow-hidden">
+                <div class="absolute inset-0 opacity-10">
+                    <i class="fa fa-server text-[200px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" aria-hidden="true"></i>
+                </div>
+                <div class="relative z-10">
+                    <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold mb-2 text-shadow">系统维护中</h1>
+                    <p class="text-[clamp(1rem,2vw,1.25rem)] opacity-90 max-w-2xl">我们正在进行必要的系统升级和维护工作，以提供更好的服务体验</p>
+                </div>
+            </div>
+            
+            <!-- 内容 -->
+            <div class="p-8 md:p-12">
+                <!-- 状态图标 -->
+                <div class="flex justify-center mb-10">
+                    <div class="bg-primary/10 rounded-full p-6 animate-float">
+                        <i class="fa fa-wrench text-primary text-[60px]" aria-hidden="true"></i>
+                    </div>
+                </div>
+                
+                <!-- 通知内容 -->
+                <div class="text-center mb-12">
+                    <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold mb-4">服务器暂时关闭</h2>
+                    <p class="text-gray-600 text-lg mb-6">我们预计在以下时间恢复服务</p>
+                    
+                    <!-- 倒计时 -->
+                    <div class="grid grid-cols-4 gap-4 md:gap-6 max-w-2xl mx-auto mb-8">
+                        <div class="countdown-item bg-gray-50 rounded-xl p-4 md:p-6">
+                            <div id="days" class="text-3xl md:text-4xl font-bold text-primary">02</div>
+                            <div class="text-sm md:text-base text-gray-500 mt-1">天</div>
+                        </div>
+                        <div class="countdown-item bg-gray-50 rounded-xl p-4 md:p-6">
+                            <div id="hours" class="text-3xl md:text-4xl font-bold text-primary">10</div>
+                            <div class="text-sm md:text-base text-gray-500 mt-1">时</div>
+                        </div>
+                        <div class="countdown-item bg-gray-50 rounded-xl p-4 md:p-6">
+                            <div id="minutes" class="text-3xl md:text-4xl font-bold text-primary">45</div>
+                            <div class="text-sm md:text-base text-gray-500 mt-1">分</div>
+                        </div>
+                        <div class="countdown-item bg-gray-50 rounded-xl p-4 md:p-6">
+                            <div id="seconds" class="text-3xl md:text-4xl font-bold text-primary">33</div>
+                            <div class="text-sm md:text-base text-gray-500 mt-1">秒</div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-600">预计恢复时间: <span id="recovery-time" class="font-medium text-primary">2026年6月03日 24:00</span></p>
+                </div>
+                
+                <!-- 维护信息 -->
+                <div class="bg-gray-50 rounded-xl p-6 mb-10">
+                    <h3 class="text-lg font-semibold mb-3 flex items-center">
+                        <i class="fa fa-info-circle text-primary mr-2" aria-hidden="true"></i>
+                        维护内容
+                    </h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-green-500 mt-1 mr-2" aria-hidden="true"></i>
+                            <span>系统架构升级与优化</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-green-500 mt-1 mr-2" aria-hidden="true"></i>
+                            <span>安全漏洞修复与性能增强</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-green-500 mt-1 mr-2" aria-hidden="true"></i>
+                            <span>数据库优化与数据迁移</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-spinner fa-spin text-primary mt-1 mr-2" aria-hidden="true"></i>
+                            <span>新功能开发与测试</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- 联系信息 -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-gray-50 rounded-xl p-6 text-center hover:shadow-md transition-shadow">
+                        <div class="bg-primary/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fa fa-envelope text-primary" aria-hidden="true"></i>
+                        </div>
+                        <h3 class="font-semibold mb-2">电子邮件</h3>
+                        <p class="text-gray-600">michaelsoft@email.cn</p>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-xl p-6 text-center hover:shadow-md transition-shadow">
+                        <div class="bg-primary/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fa fa-comments text-primary" aria-hidden="true"></i>
+                        </div>
+                        <h3 class="font-semibold mb-2">在线支持</h3>
+                        <p class="text-gray-600"> 18:00-21:00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部信息 -->
+        <div class="mt-12 text-center text-gray-500">
+            <p>感谢您的耐心等待，我们将尽快完成维护工作</p>
+            <p class="mt-2 text-sm">© 2025~2026 Michaelsoft Community. 保留所有权利.</p>
+        </div>
+    </main>
+    
+    <!-- JavaScript -->
+    <script>
+        // 倒计时功能
+        function updateCountdown() {
+            // 设置预计恢复时间
+            const recoveryTime = new Date("2026-06-03T24:00:00").getTime();
+            const now = new Date().getTime();
+            const timeLeft = recoveryTime - now;
+            
+            // 计算剩余时间
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            
+            // 更新DOM
+            document.getElementById("days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+            
+            // 如果时间到了，显示恢复信息
+            if (timeLeft < 0) {
+                clearInterval(countdownTimer);
+                document.querySelector(".countdown-item").innerHTML = 
+                    '<div class="text-3xl md:text-4xl font-bold text-green-500">已恢复</div>';
+                document.getElementById("recovery-time").innerText = "已完成";
+            }
+        }
+        
+        // 初始化倒计时
+        updateCountdown();
+        const countdownTimer = setInterval(updateCountdown, 1000);
+        
+        // 添加页面加载动画
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.classList.add('opacity-100');
+            document.body.classList.remove('opacity-0');
+        });
+    </script>
+</body>
+</html>

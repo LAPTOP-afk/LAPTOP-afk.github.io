@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ViveTool_CmdUI -Michaelsoft Community</title>
+    <link rel="icon" href="（网站图标链接）" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #22d3ee;
+            --dark: #1e293b;
+            --light: #f8faff;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', system-ui, sans-serif;
+            color: var(--dark);
+            margin: 0;
+            padding: 0;
+            background: var(--light);
+            line-height: 1.6;
+        }
+
+        .hero {
+            height: 60vh;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="white" opacity="0.05"/></svg>');
+        }
+
+        .class-title {
+            font-size: 4rem;
+            font-weight: 300;
+            margin: 0;
+            position: relative;
+            z-index: 2;
+            letter-spacing: 2px;
+        }
+
+        .class-motto {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-top: 1rem;
+            opacity: 0.9;
+            z-index: 2;
+            letter-spacing: 4px;
+        }
+
+        .search-container {
+            position: sticky;
+            top: 2rem;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            margin: 2rem 0;
+            display: flex;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .search-box {
+            background: rgba(255,255,255,0.95);
+            border-radius: 2rem;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            gap: 1rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border: 1px solid rgba(224,231,255,0.8);
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            background: transparent;
+        }
+
+        .content {
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section {
+            background: white;
+            border-radius: 1rem;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--dark);
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .platform-card {
+            background: #f8fafc;
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(226,232,240,0.5);
+        }
+
+        .platform-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(99,102,241,0.1);
+            background: white;
+        }
+
+        .platform-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .music-player {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            background: white;
+            border-radius: 2rem;
+            padding: 0.8rem 1.5rem;
+            box-shadow: 0 8px 24px rgba(99,102,241,0.1);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            z-index: 100;
+        }
+
+        .player-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--primary);
+            font-size: 1.2rem;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+
+        .player-btn:hover {
+            background: rgba(99,102,241,0.1);
+        }
+
+        .volume-container {
+            position: relative;
+        }
+
+        .volume-slider {
+            position: absolute;
+            bottom: 220%;
+            left: 50%;
+            transform: translateX(-50%) rotate(270deg);
+            width: 100px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .volume-container:hover .volume-slider {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .class-title {
+                font-size: 2.5rem;
+            }
+            .class-motto {
+                font-size: 1rem;
+            }
+            .section {
+                padding: 1.5rem;
+            }
+            .music-player {
+                bottom: 1rem;
+                left: 1rem;
+                padding: 0.6rem 1rem;
+            }
+            .search-container {
+                top: 1rem;
+                margin: 1rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 标语 -->
+    <div class="hero">
+        <h1 class="class-title">Michaelsoft Community</h1>
+        <p class="class-motto">一个集软件分享，软件开发的社区。</p>
+    </div>
+
+    <!-- 搜索框 -->
+    <div class="search-container">
+        <form class="search-box" action="https://www.bing.com/" method="GET" target="_blank">
+            <input type="text" name="q" class="search-input" placeholder="探索世界，从这里开始">
+            <button type="submit" class="player-btn">
+                <i class="fas fa-search"></i>
+            </button>
+        </form>
+    </div>
+
+    <!-- 主要内容 -->
+    <div class="content">
+        <section class="section">
+            <h2 class="section-title">✨ViveTool_CmdUI 简介</h2>
+            <p>ViveTool的CmdUI重构。</p>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">🚀 ViveTool_CmdUI 下载地址</h2>
+            <div class="platform-grid">
+            
+                <!-- 1 -->
+                <a href="github.com/LAPTOP-afk/ViveTool_CmdUI" class="platform-card" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
+                    <div class="platform-icon">
+                    </div>
+                    <h3>Github</h3>
+                    <p style="color: #64748b; font-size: 0.9rem;"></p>
+                </a>
+                
+                                <!-- 平台2 -->
+                <a href=lanzoux.com/ieY9a2y50hih"" class="platform-card" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
+                    <div class="platform-icon">
+                    </div>
+                    <h3>蓝奏云（提取码4dq0）</h3>
+                    <p style="color: #64748b; font-size: 0.9rem;"></p>
+                </a>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- 音乐播放器 -->
+    <div class="music-player">
+        <button class="player-btn" onclick="togglePlay()">
+            <i class="fas fa-play" id="playIcon"></i>
+        </button>
+        <span style="font-size: 0.9rem; color: #64748b;"></span>
+        <div class="volume-container">
+            <button class="player-btn" onclick="toggleVolume()">
+                <i class="fas fa-volume-up"></i>
+            </button>
+            <input type="range" class="volume-slider" id="volume" min="0" max="1" step="0.1" value="0.8">
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Michaelsoft Community.</p>
+
+        <p style="color: #94a3b8; margin-top: 0.5rem;">
+            All rights reserved.
+        </p>
+    </footer>
+
+    <script>
+        // 音乐播放器配置
+        const playlist = [
+            ' ',
+            ' '
+        ];
+        
+        let currentTrack = 0;
+        const audio = new Audio();
+        const playIcon = document.getElementById('playIcon');
+        
+        function initAudio() {
+            audio.src = playlist[currentTrack];
+            audio.volume = 0.8;
+            audio.loop = false;
+            
+            audio.addEventListener('ended', playNextTrack);
+            audio.addEventListener('error', handleAudioError);
+            audio.addEventListener('play', updatePlayButton);
+            audio.addEventListener('pause', updatePlayButton);
+        }
+        
+        function updatePlayButton() {
+            playIcon.classList.toggle('fa-play', audio.paused);
+            playIcon.classList.toggle('fa-pause', !audio.paused);
+        }
+        
+        function playNextTrack() {
+            currentTrack = (currentTrack + 1) % playlist.length;
+            audio.src = playlist[currentTrack];
+            audio.play().catch(e => {
+                console.error("自动播放失败:", e);
+                updatePlayButton();
+            });
+        }
+        
+        function handleAudioError() {
+            console.error("音频加载失败:", audio.error);
+            playNextTrack(); 
+        }
+        
+        function togglePlay() {
+            if(audio.readyState === 0) {
+                initAudio();
+            }
+            
+            if(audio.paused) {
+                audio.play().catch(e => {
+                    console.error("播放失败:", e);
+                    updatePlayButton();
+                });
+            } else {
+                audio.pause();
+            }
+        }
+        
+        function toggleVolume() {
+            const slider = document.querySelector('.volume-slider');
+            slider.style.opacity = slider.style.opacity === '1' ? '0' : '1';
+            slider.style.pointerEvents = slider.style.opacity === '1' ? 'all' : 'none';
+        }
+        
+        document.getElementById('volume').addEventListener('input', (e) => {
+            audio.volume = e.target.value;
+        });
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            initAudio();
+        });
+    </script>
+</body>
+</html>
